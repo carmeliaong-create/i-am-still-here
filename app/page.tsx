@@ -179,7 +179,7 @@ export default function Home() {
       <header className="desktop-stamp">THE_ONLY_ME_IS_ME.OS <span>archive build 2014—2025</span></header>
       <section className="desktop-icons" aria-label="Desktop icons">
         {icons.map((icon) => (
-          <button className="desktop-icon" key={icon.id} onClick={() => show(icon.id)}>
+          <button className="desktop-icon" key={icon.id} onPointerUp={() => show(icon.id)} onClick={(event) => { if (event.detail === 0) show(icon.id); }}>
             <span className="pixel-icon" aria-hidden="true">{icon.glyph}</span>
             <span className={active === icon.id ? "selected-label" : ""}>{icon.label}</span>
           </button>
