@@ -153,7 +153,7 @@ export default function Home() {
   };
   const startMedia = (target: HTMLElement) => {
     if (sound && musicRef.current?.paused) void musicRef.current.play().catch(() => {});
-    if (target.closest(".tv-window") && videoRef.current?.paused) void videoRef.current.play().catch(() => {});
+    if (target.closest(".tv-screen") && !target.closest("button") && videoRef.current?.paused) void videoRef.current.play().catch(() => {});
   };
   const openPost = (post: Post) => {
     setSelected(post);
