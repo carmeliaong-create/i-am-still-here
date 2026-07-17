@@ -68,8 +68,8 @@ function postName(post: Post) {
 }
 
 export default function Home() {
-  const [open, setOpen] = useState<WindowName[]>(["tv"]);
-  const [active, setActive] = useState<WindowName>("tv");
+  const [open, setOpen] = useState<WindowName[]>(["system"]);
+  const [active, setActive] = useState<WindowName>("system");
   const [selected, setSelected] = useState<Post>(entries[0]);
   const [postOpen, setPostOpen] = useState(false);
   const [query, setQuery] = useState("");
