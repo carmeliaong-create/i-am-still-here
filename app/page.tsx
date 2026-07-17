@@ -99,6 +99,7 @@ export default function Home() {
   const [foundSecrets, setFoundSecrets] = useState<string[]>([]);
   const [secretNotice, setSecretNotice] = useState("");
   const [stampClicks, setStampClicks] = useState(0);
+  const [clippyAsks, setClippyAsks] = useState(0);
   const years = useMemo(() => [...new Set(entries.map((p) => p.date.slice(-4)))], []);
   const filtered = useMemo(() => entries.filter((p) => {
     const matchesYear = year === "all" || p.date.endsWith(year);
@@ -139,7 +140,7 @@ export default function Home() {
           window.clearInterval(timer);
           setDialing(false);
           playSound("error");
-          discover("dial-tone", "SECRET 02/07: A connection can succeed without anyone answering.");
+          discover("dial-tone", "SECRET 02/10: A connection can succeed without anyone answering.");
           setNarrative({ title: "Connection complete", heading: "No one answered.", body: "The line remained open for a few seconds longer than necessary.", icon: "\u260E\uFE0F" });
           return step;
         }
@@ -211,6 +212,7 @@ export default function Home() {
       if (next) void musicRef.current.play().catch(() => {});
       else musicRef.current.pause();
     }
+    if (!next) discover("silence", "SECRET 08/10: The machine continued after its voice was removed.");
     if (next) setTimeout(() => playSound("startup", true), 0);
   };
   const startMedia = (target: HTMLElement) => {
@@ -262,7 +264,12 @@ export default function Home() {
       `${word}.URL — shortcut target has moved or no longer exists.`,
     ];
     setFinderResult(fragments[word.length % fragments.length]);
-    if (/^(me|myself|nothing|lost)$/i.test(word)) discover("find-yourself", "SECRET 03/07: The search term was also the searcher.");
+    if (/^(me|myself|nothing|lost)$/i.test(word)) discover("find-yourself", "SECRET 03/10: The search term was also the searcher.");
+  };
+  const viewPhoto = (index: number) => {
+    const wrapped = (index + photos1998.length) % photos1998.length;
+    setPhotoIndex(wrapped);
+    if (wrapped === photos1998.length - 1) discover("last-photo", "SECRET 09/10: The last image did not behave like an ending.");
   };
 
   return (
@@ -273,7 +280,7 @@ export default function Home() {
       <header className="desktop-stamp" onClick={() => {
         const next = stampClicks + 1;
         setStampClicks(next);
-        if (next >= 4) discover("build-number", "SECRET 07/07: You checked whether the label was only a label.");
+        if (next >= 4) discover("build-number", "SECRET 07/10: You checked whether the label was only a label.");
       }}>THE_ONLY_ME_IS_ME.OS <span>archive build 2014—2025</span></header>
       <section className="desktop-icons" aria-label="Desktop icons">
         {icons.map((icon) => (
@@ -286,7 +293,7 @@ export default function Home() {
           <span className="pixel-icon" aria-hidden="true">🪞</span>
           <span>The Only Me Is Me</span>
         </a>
-        {foundSecrets.length >= 7 && <button className="desktop-icon completion-file" onClick={() => reveal({title:"I_AM_STILL_HERE.EXE",heading:"Installation complete.",body:"You found every place the system tried to hide itself.\n\nNothing new was installed. Something already present became visible.",icon:"✦"})}><span className="pixel-icon">✦</span><span>I_AM_STILL_HERE.EXE</span></button>}
+        {foundSecrets.length >= 10 && <button className="desktop-icon completion-file" onClick={() => reveal({title:"I_AM_STILL_HERE.EXE",heading:"Installation complete.",body:"You found every place the system tried to hide itself.\n\nNothing new was installed. Something already present became visible.",icon:"✦"})}><span className="pixel-icon">✦</span><span>I_AM_STILL_HERE.EXE</span></button>}
       </section>
 
       {open.includes("diary") && (
@@ -327,10 +334,10 @@ export default function Home() {
             <div className="photo-stage">
               <div className="photo-mat"><img src={photos1998[photoIndex]} alt={`1998 photograph ${photoIndex + 1}`} /></div>
               <div className="photo-caption"><b>1998_{String(photoIndex + 1).padStart(2, "0")}.JPG</b><span>{photoIndex + 1} of {photos1998.length}</span></div>
-              <div className="photo-controls"><button onClick={() => setPhotoIndex((photoIndex - 1 + photos1998.length) % photos1998.length)}>◀ Previous</button><button onClick={() => setPhotoIndex((photoIndex + 1) % photos1998.length)}>Next ▶</button></div>
+              <div className="photo-controls"><button onClick={() => viewPhoto(photoIndex - 1)}>◀ Previous</button><button onClick={() => viewPhoto(photoIndex + 1)}>Next ▶</button></div>
             </div>
             <nav className="contact-sheet" aria-label="1998 photo thumbnails">
-              {photos1998.map((photo, index) => <button key={photo} className={index === photoIndex ? "selected-photo" : ""} onClick={() => setPhotoIndex(index)}><img src={photo} alt="" loading="lazy" /><span>{String(index + 1).padStart(2, "0")}</span></button>)}
+              {photos1998.map((photo, index) => <button key={photo} className={index === photoIndex ? "selected-photo" : ""} onClick={() => viewPhoto(index)}><img src={photo} alt="" loading="lazy" /><span>{String(index + 1).padStart(2, "0")}</span></button>)}
             </nav>
           </div>
           <div className="statusbar"><span>{photos1998.length} image(s)</span><span>Album: 1998</span></div>
@@ -425,12 +432,12 @@ export default function Home() {
         <section className={`window inbox-window ${active === "inbox" ? "is-active" : ""}`} onMouseDown={() => setActive("inbox")}>
           <div className="titlebar"><span>Inbox - Microsoft Exchange</span><div><button aria-label="Close" onClick={() => close("inbox")}>×</button></div></div>
           <div className="menubar"><u>F</u>ile　 <u>E</u>dit　 <u>V</u>iew　 <u>C</u>ompose　 <u>H</u>elp</div>
-          <div className="mail-toolbar"><button>New Message</button><button onClick={() => reveal({title:"Send and Receive",heading:"No new mail.",body:"The server checked twice, as if certainty could be increased by repetition.",icon:"📡"})}>Send and Receive</button></div>
+          <div className="mail-toolbar"><button>New Message</button><button onClick={() => reveal({title:"Send and Receive",heading:"Inbox unchanged.",body:"The server looked again. Absence remained inconclusive.",icon:"📡"})}>Send and Receive</button></div>
           <div className="mail-list" role="list">
             <div className="mail-head"><span>From</span><span>Subject</span><span>Received</span></div>
             {inboxMessages.map((message, index) => <button key={message.subject} onClick={() => {
               reveal({title:`Message from ${message.from}`,heading:message.subject,body:message.body,icon:"✉️"});
-              if (message.from === "FUTURE SELF") discover("future-mail", "SECRET 04/07: The reply arrived before the question.");
+              if (message.from === "FUTURE SELF") discover("future-mail", "SECRET 04/10: The reply arrived before the question.");
             }}><span>{index ? "✉️" : "📩"} {message.from}</span><span>{message.subject}</span><span>{index + 1} day{index ? "s" : ""} ago</span></button>)}
           </div>
           <div className="mail-preview">Select a message to open it. Unread messages may have already changed you.</div>
@@ -482,14 +489,14 @@ export default function Home() {
           <div className="menubar"><u>F</u>ile　 <u>E</u>dit　 <u>V</u>iew　 <u>H</u>elp</div>
           <div className="system-toolbar"><button onClick={() => {
             setShowHidden((value) => {
-              if (!value) discover("hidden-files", "SECRET 01/07: Hidden does not mean absent.");
+              if (!value) discover("hidden-files", "SECRET 01/10: Hidden does not mean absent.");
               return !value;
             });
           }}>{showHidden ? "Hide" : "Show"} hidden files</button><span>Address: C:\SYSTEM\RECOVERED</span></div>
           <div className="recovered-grid">
             {recoveredFiles.map((file) => <button key={file.name} onClick={() => {
               reveal({title:file.title,heading:file.name,body:file.body,icon:file.icon,kind:"kind" in file ? file.kind : undefined});
-              if (file.name === "ATTENTION.DOC") discover("attention", "SECRET 05/07: You stayed with one thing.");
+              if (file.name === "ATTENTION.DOC") discover("attention", "SECRET 05/10: You stayed with one thing.");
             }}><span>{file.icon}</span>{file.name}</button>)}
             {showHidden && <button onClick={() => setTheme("system7")}><span>🖥️</span>SYSTEM7.THE</button>}
             {showHidden && <button onClick={() => show("heaven")}><span>🌤️</span>HEAVEN.HTM</button>}
@@ -516,7 +523,7 @@ export default function Home() {
           <div className="browser-menu">File　 Edit　 View　 Favorites　 Tools　 Help</div>
           <div className="addressbar">Address　 <span>http://somewhere/after/this/</span></div>
           <article className="heaven-page"><h1>{["I thought permanence would feel different.","This page is still under construction.","There is nothing to download here."][heavenStep]}</h1><p>{["Maybe I confused being remembered with remaining.","Please return when you are finished becoming.","The server kept the request. It could not keep you."][heavenStep]}</p><button onClick={() => {
-            if (heavenStep === 2) discover("heaven-loop", "SECRET 06/07: Continue did not mean forward.");
+            if (heavenStep === 2) discover("heaven-loop", "SECRET 06/10: Continue did not mean forward.");
             setHeavenStep((heavenStep + 1) % 3);
           }}>Continue</button></article>
           <div className="browser-status">Done, but with errors on page.</div>
@@ -533,11 +540,16 @@ export default function Home() {
 
       {secretNotice && <div className="secret-notice" role="status"><b>NEW SYSTEM EVENT</b><span>{secretNotice}</span></div>}
       {clippyVisible && <aside className="clippy" role="dialog" aria-label="Clippy asks a question">
-        <div className="clippy-bubble"><button className="clippy-close" aria-label="Dismiss Clippy" onClick={() => setClippyVisible(false)}>×</button><p>{clippyQuestions[clippyQuestion]}</p><div><button onClick={() => setClippyQuestion((clippyQuestion + 1) % clippyQuestions.length)}>ASK AGAIN</button><button onClick={() => setClippyVisible(false)}>NOT NOW</button></div></div>
+        <div className="clippy-bubble"><button className="clippy-close" aria-label="Dismiss Clippy" onClick={() => setClippyVisible(false)}>×</button><p>{clippyQuestions[clippyQuestion]}</p><div><button onClick={() => {
+          const next = clippyAsks + 1;
+          setClippyAsks(next);
+          setClippyQuestion((clippyQuestion + 1) % clippyQuestions.length);
+          if (next >= 5) discover("ask-again", "SECRET 10/10: Repetition eventually became an answer.");
+        }}>ASK AGAIN</button><button onClick={() => setClippyVisible(false)}>NOT NOW</button></div></div>
         <div className="clippy-character" aria-hidden="true"><span className="clippy-wire"></span><span className="clippy-brow clippy-brow-left"></span><span className="clippy-brow clippy-brow-right"></span><span className="clippy-eye clippy-eye-left"><i></i></span><span className="clippy-eye clippy-eye-right"><i></i></span><span className="clippy-mouth"></span></div>
       </aside>}
       {start && <div className="start-menu" onClick={(e) => e.stopPropagation()}><div className="sideword">ONLY ME</div><div className="start-items"><button onClick={() => show("diary")}>📁　Diary</button><button onClick={() => show("tv")}>📺　Home Videos</button><button onClick={() => show("archive")}>📚　Archive</button><button onClick={() => show("about")}>🖥️　About this computer</button><hr/><button onClick={() => setStart(false)}>⌛　Shut down...</button></div></div>}
-      <footer className="taskbar" onClick={(e) => e.stopPropagation()}><button className="start-button" onClick={() => setStart(!start)}>🏁 <b>Start</b></button><div className="tasks">{open.map(id => <button className={active === id ? "task active-task" : "task"} onClick={() => setActive(id)} key={id}>{id === "diary" ? "📁 Diary" : icons.find(i => i.id === id)?.glyph + " " + icons.find(i => i.id === id)?.label}</button>)}</div><button className="secret-meter" onClick={() => reveal({title:"System Events",heading:`${foundSecrets.length} of 7 unusual events recorded`,body:foundSecrets.length >= 7 ? "A new executable has appeared on the desktop." : "Clues: reveal what is hidden; call somewhere; search for yourself; read mail from later; stay with one thing; continue past the end; question the build.",icon:"?"})}>? {foundSecrets.length}/7</button><label className="music-volume" title="Background music volume"><span>♫</span><input aria-label="Background music volume" type="range" min="0" max="100" value={Math.round(backgroundVolume * 100)} onChange={(event) => { const next = Number(event.target.value) / 100; setBackgroundVolume(next); if (musicRef.current) musicRef.current.volume = next; }} /><output>{Math.round(backgroundVolume * 100)}%</output></label><button className={sound ? "sound-button sound-on" : "sound-button"} onClick={toggleSound} aria-pressed={sound} title="Toggle retro sounds">{sound ? "🔊" : "🔇"}</button><div className="clock">{new Date().toLocaleTimeString([], {hour: "2-digit", minute: "2-digit"})}</div></footer>
+      <footer className="taskbar" onClick={(e) => e.stopPropagation()}><button className="start-button" onClick={() => setStart(!start)}>🏁 <b>Start</b></button><div className="tasks">{open.map(id => <button className={active === id ? "task active-task" : "task"} onClick={() => setActive(id)} key={id}>{id === "diary" ? "📁 Diary" : icons.find(i => i.id === id)?.glyph + " " + icons.find(i => i.id === id)?.label}</button>)}</div><button className="secret-meter" onClick={() => reveal({title:"System Events",heading:`${foundSecrets.length} of 10 unusual events recorded`,body:foundSecrets.length >= 10 ? "A new executable has appeared on the desktop." : "Clues: reveal what is hidden; call somewhere; search for yourself; read mail from later; stay with one thing; continue past the end; question the build; remove the sound; reach the final photograph; ask again.",icon:"?"})}>? {foundSecrets.length}/10</button><label className="music-volume" title="Background music volume"><span>♫</span><input aria-label="Background music volume" type="range" min="0" max="100" value={Math.round(backgroundVolume * 100)} onChange={(event) => { const next = Number(event.target.value) / 100; setBackgroundVolume(next); if (musicRef.current) musicRef.current.volume = next; }} /><output>{Math.round(backgroundVolume * 100)}%</output></label><button className={sound ? "sound-button sound-on" : "sound-button"} onClick={toggleSound} aria-pressed={sound} title="Toggle retro sounds">{sound ? "🔊" : "🔇"}</button><div className="clock">{new Date().toLocaleTimeString([], {hour: "2-digit", minute: "2-digit"})}</div></footer>
     </main>
   );
 }
