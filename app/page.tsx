@@ -13,11 +13,12 @@ type VideoEntry = { channel: number; name: string; date: string; label: string; 
 
 const entries = posts as Post[];
 const notes = noteArchive as Post[];
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 const videos = (videoArchive as VideoEntry[])
   .toSorted((a, b) => a.date.localeCompare(b.date))
-  .map((video, index) => ({ ...video, channel: index + 1 }));
+  .map((video, index) => ({ ...video, channel: index + 1, src: `${basePath}${video.src}` }));
 const photos1998 = [1,2,4,5,6,7,9,10,13,19,20,21,22,24,25,26,27,28,29,30,31,32,33,34,35,36]
-  .map((number) => `/photos/1998/0000588400${String(number).padStart(2, "0")}.jpg`);
+  .map((number) => `${basePath}/photos/1998/0000588400${String(number).padStart(2, "0")}.jpg`);
 const clippyQuestions = [
   "Are you living, or producing evidence that you did?",
   "Is this memory, or merely storage?",
@@ -221,7 +222,7 @@ export default function Home() {
 
   return (
     <main className={`desktop theme-${theme}`} onClick={() => start && setStart(false)} onPointerDown={(e) => { const target = e.target as HTMLElement; startMedia(target); if (target.closest("button, a, input, select")) playSound("key"); }}>
-      <audio ref={musicRef} src="/audio/falling-pixels.mp3" autoPlay loop preload="auto" onCanPlay={(event) => { event.currentTarget.volume = backgroundVolume; if (sound) void event.currentTarget.play().catch(() => {}); }} />
+      <audio ref={musicRef} src={`${basePath}/audio/falling-pixels.mp3`} autoPlay loop preload="auto" onCanPlay={(event) => { event.currentTarget.volume = backgroundVolume; if (sound) void event.currentTarget.play().catch(() => {}); }} />
       <div className="scanlines" aria-hidden="true" />
       <div className="crt-flicker" aria-hidden="true" />
       <header className="desktop-stamp">THE_ONLY_ME_IS_ME.OS <span>archive build 2014—2025</span></header>
