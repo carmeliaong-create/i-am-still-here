@@ -7,6 +7,11 @@ body { font-family:"MS Sans Serif",Tahoma,Geneva,sans-serif; font-size:14px; col
 button,input,select { font:inherit; }
 button { color:#111; }
 .desktop { min-height:100vh; background:var(--teal); position:relative; overflow:hidden; padding:20px 20px 54px; }
+.theme-midnight { --teal:#10152f; background:radial-gradient(circle at 72% 22%,#313a65,#10152f 48%,#080a16); }
+.theme-paper { --teal:#8f8878; background-color:#8f8878; background-image:repeating-linear-gradient(0deg,#ffffff08 0 1px,transparent 1px 5px); }
+.theme-system7 { --teal:#369b9b; background:#369b9b; }
+.theme-system7 .titlebar { background:#eee; color:#111; border:1px solid #111; }
+.theme-system7 .is-active .titlebar { background:repeating-linear-gradient(0deg,#fff 0 1px,#111 1px 2px); color:#111; text-shadow:1px 1px white; }
 .desktop:after { content:""; position:absolute; inset:0; pointer-events:none; opacity:.12; background:radial-gradient(circle at 70% 30%,#fff0,transparent 35%),linear-gradient(120deg,#0002,transparent 45%); }
 .scanlines { position:absolute; inset:0; pointer-events:none; z-index:20; opacity:.055; background:repeating-linear-gradient(0deg,#000 0,#000 1px,transparent 1px,transparent 3px); }
 .crt-flicker { position:absolute; inset:0; pointer-events:none; z-index:21; background:rgba(255,255,255,.035); opacity:.18; animation:crt-flicker 6s infinite steps(1); }
@@ -118,6 +123,42 @@ dl { display:grid; grid-template-columns:100px 1fr; border-top:1px solid #777; p
 .year-grid button { padding:8px; text-align:left; }.year-grid small { display:block; color:#555; margin-left:25px; }
 .internet { text-align:center; }.internet>span { font-size:65px; }.internet a { color:#0000ee; }
 .warning { display:flex; align-items:center; gap:20px; font-size:18px; }.warning>span { font-size:50px; }.warning small { font-size:13px; }
+.control-window,.system-window { left:18%; top:9%; width:min(610px,76vw); height:min(560px,76vh); display:flex; flex-direction:column; }
+.control-grid { flex:1; display:grid; grid-template-columns:repeat(4,1fr); align-content:start; gap:16px 8px; overflow:auto; padding:20px 14px; background:#fff; border:2px inset white; }
+.control-grid button,.recovered-grid button { border:0; background:transparent; display:grid; justify-items:center; align-content:start; gap:5px; padding:6px 3px; font-size:12px; }
+.control-grid button:hover,.recovered-grid button:hover { background:#000080; color:white; outline:1px dotted white; }
+.control-grid span,.recovered-grid span { font-size:34px; filter:drop-shadow(1px 1px #777); }
+.theme-panel { padding:9px; border:2px inset white; background:#d9d9d9; }
+.theme-panel>div { display:flex; flex-wrap:wrap; gap:5px; margin:7px 0 3px; }
+.theme-panel button,.inline-themes button,.system-toolbar button { background:var(--silver); border:2px outset white; padding:4px 8px; }
+.theme-panel .chosen-theme { border-style:inset; background:#000080; color:white; }
+.theme-panel small { color:#555; }
+.system-toolbar { display:flex; align-items:center; gap:8px; padding:6px; border-bottom:1px solid #777; }
+.system-toolbar span { flex:1; padding:4px 7px; background:white; border:2px inset white; font-size:12px; }
+.recovered-grid { flex:1; display:grid; grid-template-columns:repeat(3,1fr); align-content:start; gap:14px 8px; overflow:auto; padding:24px 15px; background:white; border:2px inset white; }
+.system-whisper { padding:8px; background:#fffbd1; border:1px solid #888; font:12px "Courier New",monospace; }
+.connection-window { left:50%; top:47%; transform:translate(-50%,-50%); width:min(440px,calc(100vw - 24px)); padding:3px; }
+.connection-window h2 { font-size:15px; font-weight:normal; margin:12px 18px; }
+.connection-window fieldset { margin:10px 18px; min-height:66px; padding:16px 12px; border:2px groove white; }
+.connection-window .dial-status { min-height:105px; }
+.dial-banner { height:86px; margin:12px 18px 4px; display:flex; align-items:center; gap:8px; overflow:hidden; padding:10px; background:#087f7f; border:2px inset white; font-size:38px; }
+.dial-banner i { flex:1; height:1px; border-top:2px dotted #b8ffff; }
+.dial-actions,.narrative-actions { display:flex; justify-content:center; padding:5px 10px 14px; }
+.dial-actions button,.narrative-actions button { min-width:110px; padding:5px 14px; background:var(--silver); border:2px outset white; }
+.heaven-window { left:12%; top:8%; width:min(720px,82vw); height:min(560px,77vh); display:flex; flex-direction:column; }
+.browser-menu,.addressbar,.browser-status { padding:6px; background:var(--silver); border-bottom:1px solid #777; }
+.addressbar span { display:inline-block; width:calc(100% - 72px); padding:3px 6px; background:white; border:2px inset white; }
+.heaven-page { flex:1; overflow:auto; padding:60px 35px; text-align:center; background:white; color:#111; font-family:"Times New Roman",serif; }
+.heaven-page h1 { font-size:28px; margin:0 auto 38px; max-width:520px; }
+.heaven-page p { font-size:19px; font-weight:bold; margin:0 auto 36px; max-width:480px; }
+.heaven-page button { color:#0000ee; text-decoration:underline; border:0; background:none; font-family:inherit; }
+.browser-status { border-top:2px inset white; border-bottom:0; font-size:12px; }
+.narrative-error { position:absolute; z-index:60; left:50%; top:50%; transform:translate(-50%,-50%); width:min(470px,calc(100vw - 24px)); background:var(--silver); border:2px outset white; box-shadow:6px 6px 0 #111; padding:3px; }
+.narrative-body { display:grid; grid-template-columns:54px 1fr; gap:15px; padding:24px 24px 13px; white-space:pre-wrap; }
+.narrative-body>span { font-size:42px; }
+.narrative-body h2 { margin:4px 0 10px; font-size:16px; }
+.narrative-body p { margin:0; line-height:1.5; }
+.inline-themes { display:flex; justify-content:center; gap:6px; padding:0 12px 12px; }
 .taskbar { position:absolute; z-index:30; bottom:0; left:0; right:0; height:40px; padding:4px; background:var(--silver); border-top:2px outset white; display:flex; gap:5px; }
 .start-button,.task { height:30px; background:var(--silver); border:2px outset white; padding:3px 8px; }
 .start-button:active,.active-task { border:2px inset white; background:#ddd; }
@@ -156,6 +197,13 @@ dl { display:grid; grid-template-columns:100px 1fr; border-top:1px solid #777; p
   .paper { padding:18px 16px 45px; }.paper h1{font-size:16px}.entry-text{font-size:14px}
   .statusbar span:last-child { display:none; }.statusbar{grid-template-columns:1fr}.task { width:105px; }.clock{display:none}.music-volume{width:92px;grid-template-columns:12px 1fr}.music-volume output{display:none}
   .clippy{right:6px;bottom:43px;width:min(330px,calc(100vw - 12px));grid-template-columns:1fr 67px}.clippy-character{width:67px;height:116px}.clippy-wire{right:8px;bottom:4px;width:36px;height:91px;border-width:7px}.clippy-wire:after{left:8px;top:12px;width:14px;height:61px;border-width:4px}.clippy-eye{bottom:65px;width:22px;height:27px}.clippy-eye-left{right:31px}.clippy-eye-right{right:10px}.clippy-eye i{left:6px;top:8px}.clippy-brow{bottom:95px;width:20px}.clippy-brow-left{right:32px}.clippy-brow-right{right:8px}.clippy-mouth{right:21px;bottom:55px}.clippy-bubble{margin-bottom:48px;padding:14px 12px 10px}.clippy-bubble p{font-size:13px}
+  .control-window,.system-window,.heaven-window { left:5px; right:5px; top:96px; bottom:47px; width:auto; height:auto; }
+  .control-grid { grid-template-columns:repeat(4,1fr); gap:7px 2px; padding:9px 3px; }.control-grid span,.recovered-grid span{font-size:27px}.control-grid button,.recovered-grid button{font-size:10px;overflow-wrap:anywhere}
+  .recovered-grid { grid-template-columns:repeat(3,1fr); padding:12px 5px; }
+  .theme-panel { font-size:11px; }.theme-panel>div{gap:3px}.theme-panel button{font-size:10px;padding:3px 5px}
+  .system-toolbar span { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .heaven-page { padding:42px 18px; }.heaven-page h1{font-size:22px}.heaven-page p{font-size:16px}
+  .connection-window { top:52%; }
 }
 @media (prefers-reduced-motion:no-preference) { .window { animation:open-window .16s steps(3); } @keyframes open-window { from{transform:translate(-2px,4px);opacity:.4} } .dialog-window { animation:open-dialog .16s steps(3); } @keyframes open-dialog { from{transform:translate(-50%,-47%);opacity:.4} } }
 @media (prefers-reduced-motion:reduce) { .crt-flicker { animation:none; opacity:.025; } }

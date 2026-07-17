@@ -6,17 +6,18 @@ import videoArchive from "./videos.json";
 import noteArchive from "./notes.json";
 
 type Post = { date: string; url: string; title: string; text: string };
-type WindowName = "diary" | "notes" | "photos" | "tv" | "about" | "archive" | "internet" | "trash";
+type WindowName = "diary" | "notes" | "photos" | "tv" | "about" | "archive" | "internet" | "trash" | "control" | "system" | "connection" | "heaven";
+type ThemeName = "teal" | "midnight" | "paper" | "system7";
+type Narrative = { title: string; heading: string; body: string; icon?: string };
 type VideoEntry = { channel: number; name: string; date: string; label: string; duration: number; src: string };
 
 const entries = posts as Post[];
 const notes = noteArchive as Post[];
-const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 const videos = (videoArchive as VideoEntry[])
   .toSorted((a, b) => a.date.localeCompare(b.date))
-  .map((video, index) => ({ ...video, channel: index + 1, src: `${basePath}${video.src}` }));
+  .map((video, index) => ({ ...video, channel: index + 1 }));
 const photos1998 = [1,2,4,5,6,7,9,10,13,19,20,21,22,24,25,26,27,28,29,30,31,32,33,34,35,36]
-  .map((number) => `${basePath}/photos/1998/0000588400${String(number).padStart(2, "0")}.jpg`);
+  .map((number) => `/photos/1998/0000588400${String(number).padStart(2, "0")}.jpg`);
 const clippyQuestions = [
   "Are you living, or producing evidence that you did?",
   "Is this memory, or merely storage?",
@@ -30,6 +31,9 @@ const clippyQuestions = [
   "Would you recognize yourself without the archive?",
 ];
 const icons: { id: WindowName; glyph: string; label: string }[] = [
+  { id: "control", glyph: "\u2699\uFE0F", label: "Control Panel" },
+  { id: "system", glyph: "\u{1F4C1}", label: "System Folder" },
+  { id: "connection", glyph: "\u260E\uFE0F", label: "My Connection" },
   { id: "photos", glyph: "\u{1F4F7}", label: "1998" },
   { id: "notes", glyph: "\u{1F5D2}\uFE0F", label: "Notes" },
   { id: "diary", glyph: "📁", label: "Diary (2014–2025)" },
@@ -38,6 +42,13 @@ const icons: { id: WindowName; glyph: string; label: string }[] = [
   { id: "archive", glyph: "📚", label: "Archive" },
   { id: "internet", glyph: "🌐", label: "The Internet" },
   { id: "trash", glyph: "🗑️", label: "Recycle Bin" },
+];
+
+const recoveredFiles = [
+  { name: "UNSENT.TXT", icon: "\u{1F4C4}", title: "Untitled - Notepad", body: "There were things I meant to say while they were still true.\n\nThe file was saved anyway." },
+  { name: "AFTERIMAGE.LOG", icon: "\u{1F4DD}", title: "Afterimage", body: "A record of what remained visible after the source disappeared.\n\nNo source could be located." },
+  { name: "PERMISSION.DLL", icon: "\u{1F511}", title: "Access denied", body: "You do not need permission to become unrecognizable to yourself." },
+  { name: "NOTHING_DELETED.TMP", icon: "\u{1F5D1}\uFE0F", title: "Recovery complete", body: "Nothing was deleted.\nNothing was restored.\nThe distinction may no longer be useful." },
 ];
 
 function postName(post: Post) {
@@ -66,6 +77,12 @@ export default function Home() {
   const [photoIndex, setPhotoIndex] = useState(0);
   const [clippyVisible, setClippyVisible] = useState(true);
   const [clippyQuestion, setClippyQuestion] = useState(0);
+  const [theme, setTheme] = useState<ThemeName>("teal");
+  const [showHidden, setShowHidden] = useState(false);
+  const [narrative, setNarrative] = useState<Narrative | null>(null);
+  const [dialStep, setDialStep] = useState(0);
+  const [dialing, setDialing] = useState(false);
+  const [heavenStep, setHeavenStep] = useState(0);
   const years = useMemo(() => [...new Set(entries.map((p) => p.date.slice(-4)))], []);
   const filtered = useMemo(() => entries.filter((p) => {
     const matchesYear = year === "all" || p.date.endsWith(year);
@@ -86,6 +103,23 @@ export default function Home() {
     schedule();
     return () => clearTimeout(timer);
   }, [open.length]);
+
+  useEffect(() => {
+    if (!dialing) return;
+    const timer = window.setInterval(() => {
+      setDialStep((step) => {
+        if (step >= 3) {
+          window.clearInterval(timer);
+          setDialing(false);
+          playSound("error");
+          setNarrative({ title: "Connection complete", heading: "No one answered.", body: "The line remained open for a few seconds longer than necessary.", icon: "\u260E\uFE0F" });
+          return step;
+        }
+        return step + 1;
+      });
+    }, 1350);
+    return () => window.clearInterval(timer);
+  }, [dialing]);
 
   const show = (id: WindowName) => {
     if (id !== "tv" && videoRef.current) {
@@ -174,10 +208,19 @@ export default function Home() {
     if (player.paused) { await player.play(); setPlaying(true); playSound("play"); }
     else { player.pause(); setPlaying(false); }
   };
+  const beginDialing = () => {
+    setDialStep(0);
+    setDialing(true);
+    playSound("startup");
+  };
+  const reveal = (item: Narrative) => {
+    setNarrative(item);
+    playSound("error");
+  };
 
   return (
-    <main className="desktop" onClick={() => start && setStart(false)} onPointerDown={(e) => { const target = e.target as HTMLElement; startMedia(target); if (target.closest("button, a, input, select")) playSound("key"); }}>
-      <audio ref={musicRef} src={`${basePath}/audio/falling-pixels.mp3`} autoPlay loop preload="auto" onCanPlay={(event) => { event.currentTarget.volume = backgroundVolume; if (sound) void event.currentTarget.play().catch(() => {}); }} />
+    <main className={`desktop theme-${theme}`} onClick={() => start && setStart(false)} onPointerDown={(e) => { const target = e.target as HTMLElement; startMedia(target); if (target.closest("button, a, input, select")) playSound("key"); }}>
+      <audio ref={musicRef} src="/audio/falling-pixels.mp3" autoPlay loop preload="auto" onCanPlay={(event) => { event.currentTarget.volume = backgroundVolume; if (sound) void event.currentTarget.play().catch(() => {}); }} />
       <div className="scanlines" aria-hidden="true" />
       <div className="crt-flicker" aria-hidden="true" />
       <header className="desktop-stamp">THE_ONLY_ME_IS_ME.OS <span>archive build 2014—2025</span></header>
@@ -325,6 +368,73 @@ export default function Home() {
       {open.includes("trash") && <Dialog title="Recycle Bin" active={active === "trash"} onFocus={() => setActive("trash")} onClose={() => close("trash")}>
         <div className="warning"><span>⚠️</span><p>Nothing was deleted.<br/><small>That may be the problem.</small></p></div>
       </Dialog>}
+
+      {open.includes("control") && (
+        <section className={`window control-window ${active === "control" ? "is-active" : ""}`} onMouseDown={() => setActive("control")}>
+          <div className="titlebar"><span>Control Panel</span><div><button aria-label="Close" onClick={() => close("control")}>×</button></div></div>
+          <div className="menubar"><u>F</u>ile　 <u>E</u>dit　 <u>V</u>iew　 <u>H</u>elp</div>
+          <div className="control-grid">
+            <button onClick={() => reveal({title:"Display Properties",heading:"Appearance",body:"Choose the surface the machine uses to remember you.",icon:"🖥️"})}><span>🖥️</span>Display</button>
+            <button onClick={() => setSound(!sound)}><span>🔊</span>Sounds</button>
+            <button onClick={() => reveal({title:"Date / Time",heading:"The clock is functioning normally.",body:"It cannot determine where the time went.",icon:"🕘"})}><span>🕘</span>Date / Time</button>
+            <button onClick={() => show("connection")}><span>🌐</span>Network</button>
+            <button onClick={() => setClippyVisible(true)}><span>📎</span>Office Assistant</button>
+            <button onClick={() => show("system")}><span>🗄️</span>System</button>
+            <button onClick={() => reveal({title:"Users",heading:"1 user found",body:"Several previous versions remain cached.",icon:"👤"})}><span>👤</span>Users</button>
+            <button onClick={() => reveal({title:"Passwords",heading:"Password hint",body:"The thing you promised not to forget.",icon:"🔑"})}><span>🔑</span>Passwords</button>
+          </div>
+          <div className="theme-panel"><b>Desktop theme</b><div>
+            <button className={theme === "teal" ? "chosen-theme" : ""} onClick={() => setTheme("teal")}>Desktop Teal</button>
+            <button className={theme === "midnight" ? "chosen-theme" : ""} onClick={() => setTheme("midnight")}>After Hours</button>
+            <button className={theme === "paper" ? "chosen-theme" : ""} onClick={() => setTheme("paper")}>Unsent Letter</button>
+            {showHidden && <button className={theme === "system7" ? "chosen-theme" : ""} onClick={() => setTheme("system7")}>System 7.5.3</button>}
+          </div>{!showHidden && <small>1 installed theme is hidden.</small>}</div>
+          <div className="statusbar"><span>8 object(s)</span><span>Control Panel</span></div>
+        </section>
+      )}
+
+      {open.includes("system") && (
+        <section className={`window system-window ${active === "system" ? "is-active" : ""}`} onMouseDown={() => setActive("system")}>
+          <div className="titlebar"><span>Exploring C:\SYSTEM\RECOVERED</span><div><button aria-label="Close" onClick={() => close("system")}>×</button></div></div>
+          <div className="menubar"><u>F</u>ile　 <u>E</u>dit　 <u>V</u>iew　 <u>H</u>elp</div>
+          <div className="system-toolbar"><button onClick={() => setShowHidden((value) => !value)}>{showHidden ? "Hide" : "Show"} hidden files</button><span>Address: C:\SYSTEM\RECOVERED</span></div>
+          <div className="recovered-grid">
+            {recoveredFiles.map((file) => <button key={file.name} onClick={() => reveal({title:file.title,heading:file.name,body:file.body,icon:file.icon})}><span>{file.icon}</span>{file.name}</button>)}
+            {showHidden && <button onClick={() => setTheme("system7")}><span>🖥️</span>SYSTEM7.THE</button>}
+            {showHidden && <button onClick={() => show("heaven")}><span>🌤️</span>HEAVEN.HTM</button>}
+          </div>
+          <div className="system-whisper">{showHidden ? "Hidden objects are visible. They were not necessarily meant to be found." : "4 object(s). The rest are protected operating system files."}</div>
+          <div className="statusbar"><span>{showHidden ? 6 : 4} object(s)</span><span>31.5 MB available</span></div>
+        </section>
+      )}
+
+      {open.includes("connection") && (
+        <section className={`window connection-window ${active === "connection" ? "is-active" : ""}`} onMouseDown={() => setActive("connection")}>
+          <div className="titlebar"><span>Dialing Progress</span><div><button aria-label="Close" onClick={() => {setDialing(false);close("connection");}}>×</button></div></div>
+          <div className="dial-banner"><span>🌎</span><i /><span>☎️</span><span>🖥️</span></div>
+          <h2>Connect to My Connection</h2>
+          <fieldset><legend>Action</legend>Dialing attempt {Math.min(dialStep + 1, 4)} of 5.</fieldset>
+          <fieldset className="dial-status"><legend>Status</legend>{["Dialing…","Verifying user name and password…","Checking whether the past is still there…","Listening…"][dialStep]}</fieldset>
+          <div className="dial-actions">{dialing ? <button onClick={() => setDialing(false)}>Cancel</button> : <button onClick={beginDialing}>Dial</button>}</div>
+        </section>
+      )}
+
+      {open.includes("heaven") && (
+        <section className={`window heaven-window ${active === "heaven" ? "is-active" : ""}`} onMouseDown={() => setActive("heaven")}>
+          <div className="titlebar"><span>HEAVEN.HTM - Microsoft Internet Explorer</span><div><button aria-label="Close" onClick={() => close("heaven")}>×</button></div></div>
+          <div className="browser-menu">File　 Edit　 View　 Favorites　 Tools　 Help</div>
+          <div className="addressbar">Address　 <span>http://somewhere/after/this/</span></div>
+          <article className="heaven-page"><h1>{["I thought permanence would feel different.","This page is still under construction.","There is nothing to download here."][heavenStep]}</h1><p>{["Maybe I confused being remembered with remaining.","Please return when you are finished becoming.","The server kept the request. It could not keep you."][heavenStep]}</p><button onClick={() => setHeavenStep((heavenStep + 1) % 3)}>Continue</button></article>
+          <div className="browser-status">Done, but with errors on page.</div>
+        </section>
+      )}
+
+      {narrative && <section className="narrative-error" role="dialog" aria-modal="true">
+        <div className="titlebar"><span>{narrative.title}</span><div><button aria-label="Close" onClick={() => setNarrative(null)}>×</button></div></div>
+        <div className="narrative-body"><span>{narrative.icon || "⚠️"}</span><div><h2>{narrative.heading}</h2><p>{narrative.body}</p></div></div>
+        {narrative.title === "Display Properties" && <div className="inline-themes"><button onClick={() => setTheme("teal")}>Teal</button><button onClick={() => setTheme("midnight")}>After Hours</button><button onClick={() => setTheme("paper")}>Paper</button></div>}
+        <div className="narrative-actions"><button onClick={() => setNarrative(null)}>OK</button></div>
+      </section>}
 
       {clippyVisible && <aside className="clippy" role="dialog" aria-label="Clippy asks a question">
         <div className="clippy-bubble"><button className="clippy-close" aria-label="Dismiss Clippy" onClick={() => setClippyVisible(false)}>×</button><p>{clippyQuestions[clippyQuestion]}</p><div><button onClick={() => setClippyQuestion((clippyQuestion + 1) % clippyQuestions.length)}>ASK AGAIN</button><button onClick={() => setClippyVisible(false)}>NOT NOW</button></div></div>
