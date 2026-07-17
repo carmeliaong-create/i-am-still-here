@@ -1,4 +1,28 @@
-# vinext-starter
+# Vox Nihili Archive
+
+A Windows 98-inspired personal archive containing essays, diary entries,
+home videos, photographs, background music, and an existential Clippy.
+
+## GitHub Pages
+
+This repository includes a static-export workflow at
+`.github/workflows/pages.yml`. In the repository settings, choose **GitHub
+Actions** as the Pages source. Every push to `main` will then publish the site
+at:
+
+`https://carmeliaong-create.github.io/i-am-still-here/`
+
+To test the Pages export locally:
+
+```bash
+npm ci
+$env:NEXT_PUBLIC_BASE_PATH="/i-am-still-here" # PowerShell
+npm run build:pages
+```
+
+The generated static site is written to `out/`.
+
+## Original Sites development setup
 
 A clean full-stack starter running on
 [vinext](https://github.com/cloudflare/vinext), with optional Cloudflare D1 and
