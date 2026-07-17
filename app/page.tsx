@@ -375,7 +375,7 @@ export default function Home() {
           <div className="menubar"><u>F</u>ile　 <u>E</u>dit　 <u>V</u>iew　 <u>H</u>elp</div>
           <div className="control-grid">
             <button onClick={() => reveal({title:"Display Properties",heading:"Appearance",body:"Choose the surface the machine uses to remember you.",icon:"🖥️"})}><span>🖥️</span>Display</button>
-            <button onClick={() => setSound(!sound)}><span>🔊</span>Sounds</button>
+            <button onClick={toggleSound}><span>🔊</span>Sounds</button>
             <button onClick={() => reveal({title:"Date / Time",heading:"The clock is functioning normally.",body:"It cannot determine where the time went.",icon:"🕘"})}><span>🕘</span>Date / Time</button>
             <button onClick={() => show("connection")}><span>🌐</span>Network</button>
             <button onClick={() => setClippyVisible(true)}><span>📎</span>Office Assistant</button>
