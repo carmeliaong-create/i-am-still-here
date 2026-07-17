@@ -188,7 +188,7 @@ export default function Home() {
             <span className={active === icon.id ? "selected-label" : ""}>{icon.label}</span>
           </button>
         ))}
-        <a className="desktop-icon external-shortcut" href="https://carmeliaong-create.github.io/the-only-me-is-me/" target="_self" aria-label="Open The Only Me Is Me">
+        <a className="desktop-icon external-shortcut" href="https://carmeliaong-create.github.io/the-only-me-is-me/" target="_self" aria-label="Open The Only Me Is Me" onPointerDown={(event) => { event.preventDefault(); window.location.assign(event.currentTarget.href); }}>
           <span className="pixel-icon" aria-hidden="true">🪞</span>
           <span>The Only Me Is Me</span>
         </a>

@@ -22,7 +22,7 @@ button { color:#111; }
 .desktop-stamp { position:absolute; right:22px; top:18px; color:#d4ffff; text-shadow:1px 1px #004747; font:bold 12px monospace; letter-spacing:.12em; opacity:.7; }
 .desktop-stamp span { font-weight:normal; opacity:.75; }
 .desktop-icons { display:grid; width:100px; gap:17px; position:relative; z-index:2; }
-.desktop-icon { background:none; border:0; color:white; width:92px; text-shadow:1px 1px #000; padding:2px; cursor:default; display:grid; justify-items:center; gap:4px; }
+.desktop-icon { background:none; border:0; color:white; width:92px; text-shadow:1px 1px #000; padding:2px; cursor:pointer; display:grid; justify-items:center; gap:4px; touch-action:manipulation; user-select:none; -webkit-user-select:none; -webkit-tap-highlight-color:transparent; }
 .external-shortcut { position:relative; text-decoration:none; text-align:center; cursor:pointer; }
 .external-shortcut .pixel-icon:after { content:"↗"; position:absolute; margin:24px 0 0 -10px; width:16px; height:16px; display:grid; place-items:center; color:#000; background:#fff; border:1px solid #111; font:bold 11px Arial; text-shadow:none; }
 .pixel-icon { font-size:38px; line-height:42px; filter:drop-shadow(2px 2px 0 #002d2d); image-rendering:pixelated; }
