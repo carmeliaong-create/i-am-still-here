@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "vox nihili — diary archive",
+  title: "the only me is me",
   description: "A Windows 98-inspired archive of writing from Mostly Introspection.",
 };
 

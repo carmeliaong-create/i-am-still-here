@@ -176,7 +176,7 @@ export default function Home() {
       <audio ref={musicRef} src={`${basePath}/audio/falling-pixels.mp3`} autoPlay loop preload="auto" onCanPlay={(event) => { event.currentTarget.volume = backgroundVolume; if (sound) void event.currentTarget.play().catch(() => {}); }} />
       <div className="scanlines" aria-hidden="true" />
       <div className="crt-flicker" aria-hidden="true" />
-      <header className="desktop-stamp">VOX_NIHILI.OS <span>archive build 2014—2025</span></header>
+      <header className="desktop-stamp">THE_ONLY_ME_IS_ME.OS <span>archive build 2014—2025</span></header>
       <section className="desktop-icons" aria-label="Desktop icons">
         {icons.map((icon) => (
           <button className="desktop-icon" key={icon.id} onDoubleClick={() => show(icon.id)} onClick={() => setActive(icon.id)}>
@@ -310,7 +310,7 @@ export default function Home() {
       )}
 
       {open.includes("about") && <Dialog title="My Computer" active={active === "about"} onFocus={() => setActive("about")} onClose={() => close("about")}>
-        <div className="system-copy"><div className="computer">🖥️</div><div><h2>vox nihili</h2><p>a small machine for keeping what could not be discarded.</p><dl><dt>Entries</dt><dd>{entries.length}</dd><dt>First file</dt><dd>{entries.at(-1)?.date}</dd><dt>Last file</dt><dd>{entries[0]?.date}</dd></dl></div></div>
+        <div className="system-copy"><div className="computer">🖥️</div><div><h2>the only me is me</h2><p>a small machine for keeping what could not be discarded.</p><dl><dt>Entries</dt><dd>{entries.length}</dd><dt>First file</dt><dd>{entries.at(-1)?.date}</dd><dt>Last file</dt><dd>{entries[0]?.date}</dd></dl></div></div>
       </Dialog>}
       {open.includes("archive") && <Dialog title="Archive Properties" active={active === "archive"} onFocus={() => setActive("archive")} onClose={() => close("archive")}>
         <p>This folder contains the complete public Blogger archive, arranged from newest to oldest.</p><div className="year-grid">{years.map(y => <button key={y} onClick={() => { setYear(y); show("diary"); }}>📂 {y}<small>{entries.filter(p => p.date.endsWith(y)).length} files</small></button>)}</div>
@@ -326,7 +326,7 @@ export default function Home() {
         <div className="clippy-bubble"><button className="clippy-close" aria-label="Dismiss Clippy" onClick={() => setClippyVisible(false)}>×</button><p>{clippyQuestions[clippyQuestion]}</p><div><button onClick={() => setClippyQuestion((clippyQuestion + 1) % clippyQuestions.length)}>ASK AGAIN</button><button onClick={() => setClippyVisible(false)}>NOT NOW</button></div></div>
         <div className="clippy-character" aria-hidden="true"><span className="clippy-wire">📎</span><span className="clippy-eyes">••</span></div>
       </aside>}
-      {start && <div className="start-menu" onClick={(e) => e.stopPropagation()}><div className="sideword">VOX NIHILI</div><div className="start-items"><button onClick={() => show("diary")}>📁　Diary</button><button onClick={() => show("tv")}>📺　Home Videos</button><button onClick={() => show("archive")}>📚　Archive</button><button onClick={() => show("about")}>🖥️　About this computer</button><hr/><button onClick={() => setStart(false)}>⌛　Shut down...</button></div></div>}
+      {start && <div className="start-menu" onClick={(e) => e.stopPropagation()}><div className="sideword">ONLY ME</div><div className="start-items"><button onClick={() => show("diary")}>📁　Diary</button><button onClick={() => show("tv")}>📺　Home Videos</button><button onClick={() => show("archive")}>📚　Archive</button><button onClick={() => show("about")}>🖥️　About this computer</button><hr/><button onClick={() => setStart(false)}>⌛　Shut down...</button></div></div>}
       <footer className="taskbar" onClick={(e) => e.stopPropagation()}><button className="start-button" onClick={() => setStart(!start)}>🏁 <b>Start</b></button><div className="tasks">{open.map(id => <button className={active === id ? "task active-task" : "task"} onClick={() => setActive(id)} key={id}>{id === "diary" ? "📁 Diary" : icons.find(i => i.id === id)?.glyph + " " + icons.find(i => i.id === id)?.label}</button>)}</div><label className="music-volume" title="Background music volume"><span>♫</span><input aria-label="Background music volume" type="range" min="0" max="100" value={Math.round(backgroundVolume * 100)} onChange={(event) => { const next = Number(event.target.value) / 100; setBackgroundVolume(next); if (musicRef.current) musicRef.current.volume = next; }} /><output>{Math.round(backgroundVolume * 100)}%</output></label><button className={sound ? "sound-button sound-on" : "sound-button"} onClick={toggleSound} aria-pressed={sound} title="Toggle retro sounds">{sound ? "🔊" : "🔇"}</button><div className="clock">{new Date().toLocaleTimeString([], {hour: "2-digit", minute: "2-digit"})}</div></footer>
     </main>
   );

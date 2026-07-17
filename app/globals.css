@@ -140,11 +140,13 @@ dl { display:grid; grid-template-columns:100px 1fr; border-top:1px solid #777; p
 @keyframes clippy-arrive { from{transform:translateY(85px);opacity:0} to{transform:translateY(0);opacity:1} }
 @media (max-width:760px) {
   .desktop { padding:8px 8px 48px; }
-  .desktop-icons { grid-template-columns:repeat(5,64px); width:auto; gap:6px; }
-  .desktop-icon { width:64px; font-size:11px; }.pixel-icon{font-size:28px;line-height:32px}
+  .desktop-icons { display:flex; width:100%; gap:6px; overflow-x:auto; padding:0 2px 5px; scrollbar-width:none; }
+  .desktop-icons::-webkit-scrollbar { display:none; }
+  .desktop-icon { flex:0 0 78px; width:78px; min-height:76px; font-size:11px; align-content:start; }.pixel-icon{font-size:28px;line-height:32px}
+  .external-shortcut { order:-1; flex-basis:94px; }
   .desktop-stamp { display:none; }
   .diary-window { left:6px; right:6px; top:96px; bottom:48px; min-width:0; min-height:0; }
-  .tv-window { left:5px; right:5px; top:96px; bottom:47px; min-width:0; min-height:0; }.tv-room{grid-template-columns:1fr;grid-template-rows:minmax(280px,65%) 1fr;padding:6px;gap:6px}.television{padding:8px;border-radius:18px}.tv-screen-shell{padding:8px}.tv-screen{min-height:210px}.tv-console{padding-top:7px;align-items:flex-end}.tv-console small{display:none}.tv-console-right{gap:4px}.tv-volume{grid-template-columns:auto 80px 34px;gap:4px}.tv-controls button{padding:6px 7px}.tape-list{display:grid;grid-template-columns:repeat(2,1fr);align-content:start}.tape-list h2{grid-column:1/-1}.tape-list button{grid-template-columns:34px 1fr;padding:5px 3px}
+  .tv-window { left:12px; right:12px; top:104px; bottom:54px; min-width:0; min-height:0; }.tv-room{grid-template-columns:1fr;grid-template-rows:minmax(220px,58%) 1fr;padding:5px;gap:5px}.television{padding:6px 8px 8px;border-radius:16px}.tv-brand{margin-bottom:3px}.tv-screen-shell{padding:6px}.tv-screen{min-height:150px}.tv-console{padding-top:5px;align-items:flex-end;gap:5px}.tv-console small{display:none}.tv-console-right{gap:3px}.tv-volume{grid-template-columns:auto 72px 32px;gap:3px}.tv-controls button{padding:5px 6px}.tape-list{display:grid;grid-template-columns:repeat(2,1fr);align-content:start}.tape-list h2{grid-column:1/-1}.tape-list button{grid-template-columns:34px 1fr;padding:5px 3px}
   .photo-window { left:5px; right:5px; top:96px; bottom:47px; min-width:0; min-height:0; }.photo-browser{grid-template-columns:1fr;grid-template-rows:minmax(260px,68%) 1fr;padding:3px}.photo-stage{padding:7px}.photo-mat{padding:5px}.contact-sheet{grid-template-columns:repeat(4,1fr);padding:4px;gap:4px}.contact-sheet button{padding:3px 3px 13px}.photo-caption{font-size:10px}
   .menubar { display:none; }.toolbar { gap:5px; }.toolbar label:first-child { flex:1; }.toolbar input { width:100%; }
   .explorer { grid-template-columns:1fr; grid-template-rows:34% 66%; gap:3px; padding:3px; }
