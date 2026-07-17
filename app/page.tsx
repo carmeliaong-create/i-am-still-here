@@ -6,7 +6,7 @@ import videoArchive from "./videos.json";
 import noteArchive from "./notes.json";
 
 type Post = { date: string; url: string; title: string; text: string };
-type WindowName = "diary" | "notes" | "photos" | "tv" | "about" | "archive" | "internet" | "trash" | "control" | "system" | "connection" | "heaven";
+type WindowName = "diary" | "notes" | "photos" | "tv" | "about" | "archive" | "internet" | "trash" | "control" | "system" | "connection" | "heaven" | "inbox" | "find";
 type ThemeName = "teal" | "midnight" | "paper" | "system7";
 type Narrative = { title: string; heading: string; body: string; icon?: string; kind?: "word" };
 type VideoEntry = { channel: number; name: string; date: string; label: string; duration: number; src: string };
@@ -35,6 +35,8 @@ const icons: { id: WindowName; glyph: string; label: string }[] = [
   { id: "control", glyph: "\u2699\uFE0F", label: "Control Panel" },
   { id: "system", glyph: "\u{1F4C1}", label: "System Folder" },
   { id: "connection", glyph: "\u260E\uFE0F", label: "My Connection" },
+  { id: "inbox", glyph: "\u{1F4EC}", label: "Inbox" },
+  { id: "find", glyph: "\u{1F50D}", label: "Find" },
   { id: "photos", glyph: "\u{1F4F7}", label: "1998" },
   { id: "notes", glyph: "\u{1F5D2}\uFE0F", label: "Notes" },
   { id: "diary", glyph: "📁", label: "Diary (2014–2025)" },
@@ -51,6 +53,13 @@ const recoveredFiles = [
   { name: "AFTERIMAGE.LOG", icon: "\u{1F4DD}", title: "Afterimage", body: "A record of what remained visible after the source disappeared.\n\nNo source could be located." },
   { name: "PERMISSION.DLL", icon: "\u{1F511}", title: "Access denied", body: "You do not need permission to become unrecognizable to yourself." },
   { name: "NOTHING_DELETED.TMP", icon: "\u{1F5D1}\uFE0F", title: "Recovery complete", body: "Nothing was deleted.\nNothing was restored.\nThe distinction may no longer be useful." },
+];
+
+const inboxMessages = [
+  { from: "SYSTEM", subject: "Delivery delayed", body: "Your message could not be delivered because the recipient has become a different person." },
+  { from: "(no sender)", subject: "Re: still here", body: "This is only a confirmation that something continued after you stopped checking." },
+  { from: "FUTURE SELF", subject: "Do not reply", body: "I received everything. It did not explain us." },
+  { from: "MAILER-DAEMON", subject: "Returned memory", body: "The attached memory exceeded the maximum permitted size and was returned unchanged." },
 ];
 
 function postName(post: Post) {
@@ -85,6 +94,8 @@ export default function Home() {
   const [dialStep, setDialStep] = useState(0);
   const [dialing, setDialing] = useState(false);
   const [heavenStep, setHeavenStep] = useState(0);
+  const [finderQuery, setFinderQuery] = useState("");
+  const [finderResult, setFinderResult] = useState("Type all or part of a name.");
   const years = useMemo(() => [...new Set(entries.map((p) => p.date.slice(-4)))], []);
   const filtered = useMemo(() => entries.filter((p) => {
     const matchesYear = year === "all" || p.date.endsWith(year);
@@ -218,6 +229,15 @@ export default function Home() {
   const reveal = (item: Narrative) => {
     setNarrative(item);
     playSound("error");
+  };
+  const searchSystem = () => {
+    const word = finderQuery.trim() || "nothing";
+    const fragments = [
+      `C:\\MEMORY\\${word.toUpperCase()}.TMP — modified after you last remember opening it.`,
+      `No exact matches for "${word}". 1 familiar feeling was found.`,
+      `${word}.URL — shortcut target has moved or no longer exists.`,
+    ];
+    setFinderResult(fragments[word.length % fragments.length]);
   };
 
   return (
@@ -370,6 +390,34 @@ export default function Home() {
       {open.includes("trash") && <Dialog title="Recycle Bin" active={active === "trash"} onFocus={() => setActive("trash")} onClose={() => close("trash")}>
         <div className="warning"><span>⚠️</span><p>Nothing was deleted.<br/><small>That may be the problem.</small></p></div>
       </Dialog>}
+
+      {open.includes("inbox") && (
+        <section className={`window inbox-window ${active === "inbox" ? "is-active" : ""}`} onMouseDown={() => setActive("inbox")}>
+          <div className="titlebar"><span>Inbox - Microsoft Exchange</span><div><button aria-label="Close" onClick={() => close("inbox")}>×</button></div></div>
+          <div className="menubar"><u>F</u>ile　 <u>E</u>dit　 <u>V</u>iew　 <u>C</u>ompose　 <u>H</u>elp</div>
+          <div className="mail-toolbar"><button>New Message</button><button onClick={() => reveal({title:"Send and Receive",heading:"No new mail.",body:"The server checked twice, as if certainty could be increased by repetition.",icon:"📡"})}>Send and Receive</button></div>
+          <div className="mail-list" role="list">
+            <div className="mail-head"><span>From</span><span>Subject</span><span>Received</span></div>
+            {inboxMessages.map((message, index) => <button key={message.subject} onClick={() => reveal({title:`Message from ${message.from}`,heading:message.subject,body:message.body,icon:"✉️"})}><span>{index ? "✉️" : "📩"} {message.from}</span><span>{message.subject}</span><span>{index + 1} day{index ? "s" : ""} ago</span></button>)}
+          </div>
+          <div className="mail-preview">Select a message to open it. Unread messages may have already changed you.</div>
+          <div className="statusbar"><span>4 message(s), 1 unread</span><span>Connected</span></div>
+        </section>
+      )}
+
+      {open.includes("find") && (
+        <section className={`window find-window ${active === "find" ? "is-active" : ""}`} onMouseDown={() => setActive("find")}>
+          <div className="titlebar"><span>Find: All Files</span><div><button aria-label="Close" onClick={() => close("find")}>×</button></div></div>
+          <div className="find-body">
+            <div className="find-dog" aria-hidden="true">🔎</div>
+            <label>Named: <input value={finderQuery} onChange={(event) => setFinderQuery(event.target.value)} onKeyDown={(event) => event.key === "Enter" && searchSystem()} /></label>
+            <label>Look in: <select><option>My Computer</option><option>Recovered</option><option>Somewhere else</option></select></label>
+            <button className="find-now" onClick={searchSystem}>Find Now</button>
+          </div>
+          <div className="find-results"><b>Search results</b><p>{finderResult}</p></div>
+          <div className="statusbar"><span>Search complete</span><span>1 implication found</span></div>
+        </section>
+      )}
 
       {open.includes("control") && (
         <section className={`window control-window ${active === "control" ? "is-active" : ""}`} onMouseDown={() => setActive("control")}>
