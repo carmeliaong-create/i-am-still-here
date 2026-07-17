@@ -1,0 +1,170 @@
+﻿[
+    {
+        "channel":  1,
+        "name":  "00026",
+        "date":  "2014-05-27T21:19:21-04:00",
+        "label":  "May 27, 2014 • 9:19 PM",
+        "duration":  215.74,
+        "src":  "/videos/00026.mp4"
+    },
+    {
+        "channel":  2,
+        "name":  "00042",
+        "date":  "2014-05-29T19:06:04-04:00",
+        "label":  "May 29, 2014 • 7:06 PM",
+        "duration":  8.51,
+        "src":  "/videos/00042.mp4"
+    },
+    {
+        "channel":  3,
+        "name":  "00090",
+        "date":  "2015-06-20T16:07:07-04:00",
+        "label":  "June 20, 2015 • 4:07 PM",
+        "duration":  452.48,
+        "src":  "/videos/00090.mp4"
+    },
+    {
+        "channel":  4,
+        "name":  "00095",
+        "date":  "2024-12-25T14:20:50-05:00",
+        "label":  "December 25, 2024 • 2:20 PM",
+        "duration":  24.54,
+        "src":  "/videos/00095.mp4"
+    },
+    {
+        "channel":  5,
+        "name":  "00096",
+        "date":  "2024-12-25T14:23:00-05:00",
+        "label":  "December 25, 2024 • 2:23 PM",
+        "duration":  8.51,
+        "src":  "/videos/00096.mp4"
+    },
+    {
+        "channel":  6,
+        "name":  "00100",
+        "date":  "2024-12-25T14:43:09-05:00",
+        "label":  "December 25, 2024 • 2:43 PM",
+        "duration":  13.54,
+        "src":  "/videos/00100.mp4"
+    },
+    {
+        "channel":  7,
+        "name":  "00101",
+        "date":  "2024-12-25T14:45:24-05:00",
+        "label":  "December 25, 2024 • 2:45 PM",
+        "duration":  7.01,
+        "src":  "/videos/00101.mp4"
+    },
+    {
+        "channel":  8,
+        "name":  "00103",
+        "date":  "2024-12-25T14:49:58-05:00",
+        "label":  "December 25, 2024 • 2:49 PM",
+        "duration":  25.54,
+        "src":  "/videos/00103.mp4"
+    },
+    {
+        "channel":  9,
+        "name":  "00105",
+        "date":  "2024-12-25T15:15:30-05:00",
+        "label":  "December 25, 2024 • 3:15 PM",
+        "duration":  18.05,
+        "src":  "/videos/00105.mp4"
+    },
+    {
+        "channel":  10,
+        "name":  "00108",
+        "date":  "2024-12-25T15:59:52-05:00",
+        "label":  "December 25, 2024 • 3:59 PM",
+        "duration":  36.54,
+        "src":  "/videos/00108.mp4"
+    },
+    {
+        "channel":  11,
+        "name":  "00109",
+        "date":  "2024-12-25T16:09:14-05:00",
+        "label":  "December 25, 2024 • 4:09 PM",
+        "duration":  119.65,
+        "src":  "/videos/00109.mp4"
+    },
+    {
+        "channel":  12,
+        "name":  "00113",
+        "date":  "2024-12-25T16:46:22-05:00",
+        "label":  "December 25, 2024 • 4:46 PM",
+        "duration":  7.52,
+        "src":  "/videos/00113.mp4"
+    },
+    {
+        "channel":  13,
+        "name":  "00117",
+        "date":  "2024-12-25T19:35:13-05:00",
+        "label":  "December 25, 2024 • 7:35 PM",
+        "duration":  32.54,
+        "src":  "/videos/00117.mp4"
+    },
+    {
+        "channel":  14,
+        "name":  "00127",
+        "date":  "2025-11-27T16:25:07-05:00",
+        "label":  "November 27, 2025 • 4:25 PM",
+        "duration":  17.02,
+        "src":  "/videos/00127.mp4"
+    },
+    {
+        "channel":  15,
+        "name":  "00129",
+        "date":  "2025-11-27T16:25:58-05:00",
+        "label":  "November 27, 2025 • 4:25 PM",
+        "duration":  7.52,
+        "src":  "/videos/00129.mp4"
+    },
+    {
+        "channel":  16,
+        "name":  "00130",
+        "date":  "2025-11-27T16:27:04-05:00",
+        "label":  "November 27, 2025 • 4:27 PM",
+        "duration":  7.01,
+        "src":  "/videos/00130.mp4"
+    },
+    {
+        "channel":  17,
+        "name":  "00131",
+        "date":  "2025-11-27T16:27:42-05:00",
+        "label":  "November 27, 2025 • 4:27 PM",
+        "duration":  12.03,
+        "src":  "/videos/00131.mp4"
+    },
+    {
+        "channel":  18,
+        "name":  "00133",
+        "date":  "2025-11-27T16:28:13-05:00",
+        "label":  "November 27, 2025 • 4:28 PM",
+        "duration":  3.52,
+        "src":  "/videos/00133.mp4"
+    },
+    {
+        "channel":  19,
+        "name":  "00135",
+        "date":  "2026-03-12T15:59:45-05:00",
+        "label":  "March 12, 2026 • 3:59 PM",
+        "duration":  9.02,
+        "src":  "/videos/00135.mp4"
+    },
+    {
+        "channel":  20,
+        "name":  "00140",
+        "date":  "2026-03-12T18:09:19-05:00",
+        "label":  "March 12, 2026 • 6:09 PM",
+        "duration":  10.02,
+        "src":  "/videos/00140.mp4"
+    },
+    {
+        "channel":  21,
+        "name":  "00017 (2)",
+        "date":  "2014-05-27",
+        "label":  "May 27, 2014 • time unknown",
+        "duration":  368.38,
+        "src":  "/videos/00017--2.mp4"
+    }
+]
