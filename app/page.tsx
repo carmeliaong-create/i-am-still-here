@@ -8,7 +8,7 @@ import noteArchive from "./notes.json";
 type Post = { date: string; url: string; title: string; text: string };
 type WindowName = "diary" | "notes" | "photos" | "tv" | "about" | "archive" | "internet" | "trash" | "control" | "system" | "connection" | "heaven";
 type ThemeName = "teal" | "midnight" | "paper" | "system7";
-type Narrative = { title: string; heading: string; body: string; icon?: string };
+type Narrative = { title: string; heading: string; body: string; icon?: string; kind?: "word" };
 type VideoEntry = { channel: number; name: string; date: string; label: string; duration: number; src: string };
 
 const entries = posts as Post[];
@@ -45,6 +45,7 @@ const icons: { id: WindowName; glyph: string; label: string }[] = [
 ];
 
 const recoveredFiles = [
+  { name: "ATTENTION.DOC", icon: "\u{1F4C3}", title: "ATTENTION.DOC - Word Processor", body: "LOOK AT THIS BLOCK OF TEXT UNTIL YOU BECOME BORED WITH IT. WHEN YOU BECOME BORED WITH IT, INSTEAD OF INSTINCTIVELY REDIRECTING YOUR ATTENTION TO SOMETHING MORE STIMULATING, NOTICE THE SLIGHT AGITATION THAT HAS COME AND TRY TO RESIST IT. THIS IS NOT TO MAKE YOU TOLERABLE OF THINGS THAT ARE MUNDANE, BUT TO HELP BUILD BACK YOUR ATTENTION SPAN THAT THE INTERNET HAS TAKEN AWAY FROM YOU.", kind: "word" as const },
   { name: "UNSENT.TXT", icon: "\u{1F4C4}", title: "Untitled - Notepad", body: "There were things I meant to say while they were still true.\n\nThe file was saved anyway." },
   { name: "AFTERIMAGE.LOG", icon: "\u{1F4DD}", title: "Afterimage", body: "A record of what remained visible after the source disappeared.\n\nNo source could be located." },
   { name: "PERMISSION.DLL", icon: "\u{1F511}", title: "Access denied", body: "You do not need permission to become unrecognizable to yourself." },
@@ -399,12 +400,12 @@ export default function Home() {
           <div className="menubar"><u>F</u>ile　 <u>E</u>dit　 <u>V</u>iew　 <u>H</u>elp</div>
           <div className="system-toolbar"><button onClick={() => setShowHidden((value) => !value)}>{showHidden ? "Hide" : "Show"} hidden files</button><span>Address: C:\SYSTEM\RECOVERED</span></div>
           <div className="recovered-grid">
-            {recoveredFiles.map((file) => <button key={file.name} onClick={() => reveal({title:file.title,heading:file.name,body:file.body,icon:file.icon})}><span>{file.icon}</span>{file.name}</button>)}
+            {recoveredFiles.map((file) => <button key={file.name} onClick={() => reveal({title:file.title,heading:file.name,body:file.body,icon:file.icon,kind:"kind" in file ? file.kind : undefined})}><span>{file.icon}</span>{file.name}</button>)}
             {showHidden && <button onClick={() => setTheme("system7")}><span>🖥️</span>SYSTEM7.THE</button>}
             {showHidden && <button onClick={() => show("heaven")}><span>🌤️</span>HEAVEN.HTM</button>}
           </div>
-          <div className="system-whisper">{showHidden ? "Hidden objects are visible. They were not necessarily meant to be found." : "4 object(s). The rest are protected operating system files."}</div>
-          <div className="statusbar"><span>{showHidden ? 6 : 4} object(s)</span><span>31.5 MB available</span></div>
+          <div className="system-whisper">{showHidden ? "Hidden objects are visible. They were not necessarily meant to be found." : "5 object(s). The rest are protected operating system files."}</div>
+          <div className="statusbar"><span>{showHidden ? 7 : 5} object(s)</span><span>31.5 MB available</span></div>
         </section>
       )}
 
@@ -429,8 +430,9 @@ export default function Home() {
         </section>
       )}
 
-      {narrative && <section className="narrative-error" role="dialog" aria-modal="true">
+      {narrative && <section className={narrative.kind === "word" ? "narrative-error word-document" : "narrative-error"} role="dialog" aria-modal="true">
         <div className="titlebar"><span>{narrative.title}</span><div><button aria-label="Close" onClick={() => setNarrative(null)}>×</button></div></div>
+        {narrative.kind === "word" && <div className="word-toolbar"><button>Styles</button><span>▤　▥　▦</span><button>Spacing</button><button>Lists</button><span className="word-ruler">0　　　1　　　2　　　3　　　4　　　5　　　6</span></div>}
         <div className="narrative-body"><span>{narrative.icon || "⚠️"}</span><div><h2>{narrative.heading}</h2><p>{narrative.body}</p></div></div>
         {narrative.title === "Display Properties" && <div className="inline-themes"><button onClick={() => setTheme("teal")}>Teal</button><button onClick={() => setTheme("midnight")}>After Hours</button><button onClick={() => setTheme("paper")}>Paper</button></div>}
         <div className="narrative-actions"><button onClick={() => setNarrative(null)}>OK</button></div>

@@ -159,6 +159,13 @@ dl { display:grid; grid-template-columns:100px 1fr; border-top:1px solid #777; p
 .narrative-body h2 { margin:4px 0 10px; font-size:16px; }
 .narrative-body p { margin:0; line-height:1.5; }
 .inline-themes { display:flex; justify-content:center; gap:6px; padding:0 12px 12px; }
+.word-document { width:min(610px,calc(100vw - 24px)); max-height:min(680px,calc(100vh - 58px)); }
+.word-toolbar { display:flex; flex-wrap:wrap; gap:5px; align-items:center; padding:5px; border-bottom:1px solid #777; background:var(--silver); }
+.word-toolbar button { background:var(--silver); border:2px outset white; padding:3px 12px; }
+.word-ruler { flex-basis:100%; height:20px; overflow:hidden; padding:2px 8px; border-top:1px solid #777; font:10px monospace; word-spacing:18px; }
+.word-document .narrative-body { display:block; min-height:390px; margin:0 5px 5px; padding:28px 34px 50px; background:white; border:2px inset white; overflow:auto; }
+.word-document .narrative-body>span,.word-document .narrative-body h2 { display:none; }
+.word-document .narrative-body p { margin:0; font:20px/1.18 Arial,Helvetica,sans-serif; letter-spacing:.035em; text-align:justify; }
 .taskbar { position:absolute; z-index:30; bottom:0; left:0; right:0; height:40px; padding:4px; background:var(--silver); border-top:2px outset white; display:flex; gap:5px; }
 .start-button,.task { height:30px; background:var(--silver); border:2px outset white; padding:3px 8px; }
 .start-button:active,.active-task { border:2px inset white; background:#ddd; }
