@@ -6,7 +6,7 @@ html, body { margin:0; min-height:100%; overflow:hidden; }
 body { font-family:"MS Sans Serif",Tahoma,Geneva,sans-serif; font-size:14px; color:#111; }
 button,input,select { font:inherit; }
 button { color:#111; }
-.desktop { min-height:100vh; background:var(--teal); position:relative; overflow:hidden; padding:20px 20px 54px; }
+.desktop { height:100vh; height:100dvh; min-height:0; background:var(--teal); position:relative; overflow:hidden; padding:20px 20px 54px; }
 .theme-midnight { --teal:#10152f; background:radial-gradient(circle at 72% 22%,#313a65,#10152f 48%,#080a16); }
 .theme-paper { --teal:#8f8878; background-color:#8f8878; background-image:repeating-linear-gradient(0deg,#ffffff08 0 1px,transparent 1px 5px); }
 .theme-system7 { --teal:#369b9b; background:#369b9b; }
@@ -26,7 +26,8 @@ button { color:#111; }
 }
 .desktop-stamp { position:absolute; right:22px; top:18px; color:#d4ffff; text-shadow:1px 1px #004747; font:bold 12px monospace; letter-spacing:.12em; opacity:.7; }
 .desktop-stamp span { font-weight:normal; opacity:.75; }
-.desktop-icons { display:grid; width:100px; gap:17px; position:relative; z-index:2; }
+.desktop-icons { display:grid; grid-template-rows:repeat(auto-fill,76px); grid-auto-flow:column; grid-auto-columns:100px; width:max-content; max-width:calc(100vw - 40px); height:calc(100vh - 88px); height:calc(100dvh - 88px); gap:12px 10px; overflow-x:auto; overflow-y:hidden; position:relative; z-index:2; scrollbar-width:none; }
+.desktop-icons::-webkit-scrollbar { display:none; }
 .desktop-icon { background:none; border:0; color:white; width:92px; text-shadow:1px 1px #000; padding:2px; cursor:pointer; display:grid; justify-items:center; gap:4px; touch-action:manipulation; user-select:none; -webkit-user-select:none; -webkit-tap-highlight-color:transparent; }
 .external-shortcut { position:relative; text-decoration:none; text-align:center; cursor:pointer; }
 .external-shortcut .pixel-icon:after { content:"↗"; position:absolute; margin:24px 0 0 -10px; width:16px; height:16px; display:grid; place-items:center; color:#000; background:#fff; border:1px solid #111; font:bold 11px Arial; text-shadow:none; }
@@ -214,7 +215,7 @@ dl { display:grid; grid-template-columns:100px 1fr; border-top:1px solid #777; p
 @keyframes clippy-arrive { from{transform:translateY(85px);opacity:0} to{transform:translateY(0);opacity:1} }
 @media (max-width:760px) {
   .desktop { padding:8px 8px 48px; }
-  .desktop-icons { display:flex; width:100%; gap:6px; overflow-x:auto; padding:0 2px 5px; scrollbar-width:none; }
+  .desktop-icons { display:flex; width:100%; max-width:none; height:auto; gap:6px; overflow-x:auto; padding:0 2px 5px; scrollbar-width:none; }
   .desktop-icons::-webkit-scrollbar { display:none; }
   .desktop-icon { flex:0 0 78px; width:78px; min-height:76px; font-size:11px; align-content:start; }.pixel-icon{font-size:28px;line-height:32px}
   .external-shortcut { order:-1; flex-basis:94px; }
